@@ -1,5 +1,6 @@
 import { FormEvent, useState } from 'react'
 import { useHistory } from 'react-router-dom'
+import { useParams } from 'react-router'
 
 import illustrationImg from '../assets/images/illustration.svg'
 import logoImg from '../assets/images/logo.svg'
@@ -11,11 +12,17 @@ import '../styles/auth.scss'
 import { useAuth } from '../hooks/useAuth'
 import { database } from '../services/firebase'
 
+type HomeParams = {
+  msg: string;
+}
+
 export function Home() {
   const history = useHistory();
   const { user, signInWithGoogle } = useAuth();
   const [roomCode, setRoomCode] = useState('');
-
+  let params = useParams<HomeParams>();
+  const msg = params.msg;
+  console.log(msg);
   async function handleCreateRoom() {
     if (!user) {
       await signInWithGoogle()
@@ -38,6 +45,11 @@ export function Home() {
       return;
     }
 
+    if (roomRef.val().endedAt) {
+      alert('Room already cloded.');
+      return;
+    }
+
     history.push(`/sala/${roomCode}`);
   }
   return (
@@ -45,7 +57,7 @@ export function Home() {
       <aside>
         <img src={illustrationImg} alt="Ilustração" />
         <strong>Crie salas de Q&A ao vivo</strong>
-        <p>Tire suas dúvidas da sua audiencia em tempo real.</p>
+        <p>Tire suas dúvidas da sua audiência em tempo real.</p>
       </aside>
       <main>
         <div className="main-content">

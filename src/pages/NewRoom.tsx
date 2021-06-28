@@ -14,6 +14,10 @@ export function NewRoom() {
   const history = useHistory();
   const [newRoom, setNewRoom] = useState('');
 
+  if (!user) {
+    history.push(`/?msg=logar`);
+  }
+
   async function handleCreateRoom(event: FormEvent) {
     event.preventDefault();
 
@@ -35,7 +39,7 @@ export function NewRoom() {
       <aside>
         <img src={illustrationImg} alt="Ilustração" />
         <strong>Crie salas de Q&amp;A ao vivo</strong>
-        <p>Tire suas dúvidas da sua audiencia em tempo real.</p>
+        <p>Tire suas dúvidas da sua audiência em tempo real.</p>
       </aside>
       <main>
         <div className="main-content">
